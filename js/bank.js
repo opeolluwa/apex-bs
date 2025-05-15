@@ -6,6 +6,8 @@ import { BankOperation } from "./bankOperation.js";
 import { naira } from "./currency.js";
 import { DataStore } from "./db.js";
 import { normalizeString, terminateProcess } from "./lib.js";
+import { Transaction } from "./transactions.js";
+import { TransactionKind } from "./transactionKind.js";
 export class BankSystem {
   #bankName;
   #bankAddress;
@@ -13,6 +15,7 @@ export class BankSystem {
   #currency;
   #dataStore;
   #prompt;
+  #transactions;
   /**
    *
    * @param {string} bankName  - name of the bank
@@ -24,6 +27,7 @@ export class BankSystem {
     this.#currency = naira;
     this.#dataStore = new DataStore(this.#bankName);
     this.#accounts = this.#dataStore.accounts;
+    this.#transactions = this.#dataStore.transactions;
     this.#prompt = readline.createInterface({ input, output });
   }
 
@@ -77,7 +81,7 @@ export class BankSystem {
     this.#checkEmailIsTaken(email);
     this.#checkPhoneIsTaken(phoneNumber);
     const account = new Account(firstName, lastName, email, phoneNumber, pin);
-    this.#dataStore.createAccount(account.accountInformation);
+    this.#dataStore.createAccount(account.serialize());
     console.log("account creates successfully\n");
   }
 
@@ -89,32 +93,37 @@ export class BankSystem {
    */
   async withdraw() {
     const accountNumber = await this.#prompt.question(
-      "Enter your account number"
+      "Enter your account number: "
     );
     const account = this.#findAccount(accountNumber);
     if (!account) {
-      terminateProcess("invalid account number");
+      terminateProcess("invalid account number: ");
     }
     const pin = await this.#prompt.question(
-      "Enter your account transaction pin"
+      "Enter your account transaction pin: "
     );
-    const validPin = await this.#validatePin(accountNumber, pin);
+    const validPin = await this.#validatePin(parseInt(accountNumber), pin);
     if (!validPin) {
-      terminateProcess("incorrec pin");
-      this.#prompt.close();
+      terminateProcess("incorrect pin");
     }
 
-    const amount = await this.#prompt.question(
-      "Enter your account transaction pin"
-    );
+    const amount = await this.#prompt.question("Enter the amount: ");
     if (account.balance < parseInt(amount)) {
       terminateProcess("insufficient fund");
     }
 
+    //todo: fix this
+    // const accountIdentifier = this.#dataStore.accounts.findIndex(account);
+    // console.log({ accountIdentifier });
     account.balance -= amount;
-    console.log("operation successful");
-    //TODO: update store
-    // TODO: add transaction
+    const transaction = new Transaction(
+      TransactionKind.Withdraw,
+      `withdraw of ${amount} by ${account.lastName} ${account.firstName}`,
+      account.identifier,
+      amount
+    ).serialize();
+
+    this.#dataStore.saveTransaction(transaction);
   }
 
   async deposit() {}
@@ -182,5 +191,9 @@ export class BankSystem {
       process.exit();
     }
     return bcrypt.compareSync(pin, account.pin);
+  }
+
+  #saveTransaction(transaction) {
+    this.#dataStore.transactions.push(transaction);
   }
 }

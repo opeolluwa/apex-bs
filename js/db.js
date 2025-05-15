@@ -7,6 +7,7 @@ import {
 } from "node:fs";
 import { join } from "node:path";
 import { normalizeString } from "./lib.js";
+import { Transaction } from "./transactions.js";
 
 /**
  *  persist the bank data to a local JSON file
@@ -39,14 +40,30 @@ export class DataStore {
     return this.#store.accounts;
   }
 
+  get transactions() {
+    return this.#store.transactions;
+  }
+
   /**
-   * @returns {Object}
+   *
+   * @param {Transaction} transaction
+   * @returns void
+   */
+  saveTransaction(transaction) {
+    const updatedStore = this.#store;
+    updatedStore.transactions.push(transaction);
+    this.#save(updatedStore);
+  }
+
+  /**
+   * @returns {Object} Store
    * @property {account[]}
+   * @property {transactions[]}
    */
   get #store() {
     const rawStoredData = readFileSync(this.#dataFilePath);
     if (rawStoredData.length == 0) {
-      const defaultContent = JSON.stringify({ accounts: [] });
+      const defaultContent = JSON.stringify({ accounts: [], transactions: [] });
       writeFileSync(this.#dataFilePath, defaultContent);
       return JSON.parse(defaultContent);
     } else {

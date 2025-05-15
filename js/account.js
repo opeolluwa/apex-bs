@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import crypto from "node:crypto";
 export class Account {
   firstName;
   lastName;
@@ -8,7 +9,7 @@ export class Account {
   #accountNumber;
   transactions;
   #balance = 0;
-
+  #identifier;
   /**
    * @constructor - create a new account
    * @param {string} firstName
@@ -23,6 +24,8 @@ export class Account {
     this.phoneNumber = phoneNumber;
     this.#accountNumber = this.#generateAccountNumber();
     this.#pin = bcrypt.hashSync(pin.trim(), 10);
+    this.transactions = [];
+    this.#identifier = crypto.randomUUID();
   }
 
   /**
@@ -34,13 +37,14 @@ export class Account {
   }
 
   /**
+   * convert to json
    * @typedef {Object} AccountInformation
    * @property {string} firstName
    * @property {string} lastname
    * @property {number} accountNumber
    * @property {number} balance
    */
-  get accountInformation() {
+  serialize() {
     return {
       firstname: this.firstName,
       lastName: this.lastName,
@@ -49,6 +53,8 @@ export class Account {
       email: this.email,
       phoneNumber: this.phoneNumber,
       pin: this.#pin,
+      transactions: this.transactions,
+      identifier: this.#identifier,
     };
   }
 
