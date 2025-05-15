@@ -6,7 +6,7 @@ export class Account {
   #pin;
   #accountNumber;
   transactions;
-  #balance;
+  #balance = 0;
 
   /**
    * @constructor - create a new account
@@ -45,6 +45,8 @@ export class Account {
       lastName: this.lastName,
       accountNumber: this.#accountNumber,
       balance: this.#balance,
+      email: this.email,
+      phoneNumber: this.phoneNumber,
     };
   }
 

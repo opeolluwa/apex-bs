@@ -1,5 +1,6 @@
 import { Account } from "./account.js";
 import { naira } from "./currency.js";
+import { DataStore } from "./db.js";
 import { normalizeString } from "./lib.js";
 
 export class BankSystem {
@@ -7,6 +8,7 @@ export class BankSystem {
   #bankAddress;
   #accounts;
   #currency;
+  #dataStore;
 
   /**
    *
@@ -19,6 +21,7 @@ export class BankSystem {
     this.#bankAddress = bankAddress.trim();
     this.#currency = naira;
     this.#accounts = [];
+    this.#dataStore = new DataStore(this.#bankName);
   }
 
   /**
@@ -27,12 +30,13 @@ export class BankSystem {
    * @param {string} phoneNumber
    * @param {string} email
    */
-  createAccount(firstName, lastName, phoneNumber, email) {
+  createAccount(firstName, lastName, phoneNumber, email, pin) {
     this.#checkEmailIsTaken(email);
     this.#checkPhoneIsTaken(phoneNumber);
-    const account = new Account(firstName, lastName, email, phoneNumber);
-    this.#accounts.push(account);
-    console.log(this.#accounts);
+    const account = new Account(firstName, lastName, email, phoneNumber, pin);
+
+    this.#dataStore.createAccount(account.accountInformation);
+    console.log("account creates successfully");
   }
 
   /**

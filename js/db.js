@@ -1,4 +1,10 @@
-import { mkdir, writeFileSync } from "node:fs";
+import {
+  mkdir,
+  writeFileSync,
+  readFileSync,
+  openSync,
+  constants,
+} from "node:fs";
 import { join } from "node:path";
 import { normalizeString } from "./lib.js";
 
@@ -22,18 +28,35 @@ export class DataStore {
     this.#findCreateStore();
   }
   #findCreateStore() {
-    const content = JSON.stringify({});
-
+    const content = JSON.stringify({ accounts: [] });
     try {
+      openSync(this.#dataFilePath, constants.O_WRONLY | constants.O_CREAT);
       writeFileSync(this.#dataFilePath, content);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async findAccont() {}
+  get accounts() {
+    return this.#store.accounts;
+  }
 
-  async createAccount() {}
+  /**
+   * @returns {Object}
+   * @property {account[]}
+   */
+  get #store() {
+    const rawStoredData = readFileSync(this.#dataFilePath);
+    return JSON.parse(rawStoredData);
+  }
 
-  async saveTransaction() {}
+  createAccount(account) {
+    const updatedStore = this.#store;
+    updatedStore.accounts.push(account);
+    this.#save(updatedStore);
+  }
+
+  #save(updatedStore) {
+    writeFileSync(this.#dataFilePath, JSON.stringify(updatedStore));
+  }
 }

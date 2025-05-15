@@ -1,7 +1,6 @@
-import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import * as readline from "node:readline/promises";
 import { BankOperation } from "./bankOperation.js";
-import { normalizeString } from "./lib.js";
 import { DataStore } from "./db.js";
 
 /**
@@ -22,7 +21,6 @@ export class BankRunner {
   constructor(bank) {
     this.#bank = bank;
     this.#prompt = readline.createInterface({ input, output });
-    this.#store = new DataStore(this.#bank.name);
   }
 
   /**
@@ -75,8 +73,9 @@ export class BankRunner {
         "What is your phone number: "
       );
       const email = await this.#prompt.question("What is your email: ");
+      const pin = await this.#prompt.question("choose a transaction pin: ");
 
-      this.#bank.createAccount(firstName, lastName, phoneNumber, email);
+      this.#bank.createAccount(firstName, lastName, phoneNumber, email, pin);
     } catch (error) {
       console.log(error);
     }
