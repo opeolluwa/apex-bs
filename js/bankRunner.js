@@ -2,6 +2,7 @@ import * as readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import { BankOperation } from "./bankOperation.js";
 import { normalizeString } from "./lib.js";
+import { DataStore } from "./db.js";
 
 /**
  * @class App
@@ -12,6 +13,7 @@ export class BankRunner {
   #prompt;
   #answer;
   #transactionCompleted = false;
+  #store;
 
   /**
    * @constructor
@@ -20,6 +22,7 @@ export class BankRunner {
   constructor(bank) {
     this.#bank = bank;
     this.#prompt = readline.createInterface({ input, output });
+    this.#store = new DataStore(this.#bank.name);
   }
 
   /**
