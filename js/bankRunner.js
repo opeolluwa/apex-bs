@@ -44,23 +44,14 @@ export class BankRunner {
     const userInput = await this.#welcome();
     const operation = BankOperation.which(userInput);
 
-    // while (!this.#transactionCompleted) {
     switch (operation) {
       case BankOperation.CreateAccount:
         await this.createAccount();
         break;
       default:
-        console.log("Invalid input ");
+        console.log("Invalid input");
         break;
     }
-    // }
-    // const endTransaction = await this.#prompt.question(
-    //   "Would you like to perform another transaction? y or n?"
-    // );
-    // if (normalizeString(endTransaction) == "y") {
-    //   this.#transactionCompleted = true;
-    //   process.exit();
-    // }
   }
 
   async createAccount() {

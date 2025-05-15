@@ -28,10 +28,8 @@ export class DataStore {
     this.#findCreateStore();
   }
   #findCreateStore() {
-    const content = JSON.stringify({ accounts: [] });
     try {
       openSync(this.#dataFilePath, constants.O_WRONLY | constants.O_CREAT);
-      writeFileSync(this.#dataFilePath, content);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +45,13 @@ export class DataStore {
    */
   get #store() {
     const rawStoredData = readFileSync(this.#dataFilePath);
-    return JSON.parse(rawStoredData);
+    if (rawStoredData.length == 0) {
+      const defaultContent = JSON.stringify({ accounts: [] });
+      writeFileSync(this.#dataFilePath, defaultContent);
+      return JSON.parse(defaultContent);
+    } else {
+      return JSON.parse(rawStoredData);
+    }
   }
 
   createAccount(account) {
