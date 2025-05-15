@@ -1,4 +1,4 @@
-import crypto, { randomBytes } from "node:crypto";
+import bcrypt from "bcrypt";
 export class Account {
   firstName;
   lastName;
@@ -22,7 +22,7 @@ export class Account {
     this.email = email.trim();
     this.phoneNumber = phoneNumber;
     this.#accountNumber = this.#generateAccountNumber();
-    this.#pin = pin; //todo:  hash
+    this.#pin = bcrypt.hashSync(pin.trim(), 10);
   }
 
   /**

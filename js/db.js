@@ -1,9 +1,9 @@
 import {
-  mkdir,
-  writeFileSync,
-  readFileSync,
-  openSync,
   constants,
+  mkdir,
+  openSync,
+  readFileSync,
+  writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
 import { normalizeString } from "./lib.js";
