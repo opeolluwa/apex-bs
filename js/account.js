@@ -1,3 +1,4 @@
+import crypto, { randomBytes } from "node:crypto";
 export class Account {
   firstName;
   lastName;
@@ -21,7 +22,7 @@ export class Account {
     this.email = email.trim();
     this.phoneNumber = phoneNumber;
     this.#accountNumber = this.#generateAccountNumber();
-    this.#pin = pin;
+    this.#pin = pin; //todo:  hash
   }
 
   /**
@@ -29,7 +30,7 @@ export class Account {
    * @returns string
    */
   #generateAccountNumber() {
-    return String(new Date().getTime());
+    return new Date().getTime();
   }
 
   /**
@@ -47,6 +48,7 @@ export class Account {
       balance: this.#balance,
       email: this.email,
       phoneNumber: this.phoneNumber,
+      pin: this.#pin,
     };
   }
 

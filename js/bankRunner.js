@@ -2,6 +2,7 @@ import { stdin as input, stdout as output } from "node:process";
 import * as readline from "node:readline/promises";
 import { BankOperation } from "./bankOperation.js";
 import { DataStore } from "./db.js";
+import { normalizeString } from "./lib.js";
 
 /**
  * @class App
@@ -65,10 +66,23 @@ export class BankRunner {
       );
       const email = await this.#prompt.question("What is your email: ");
       const pin = await this.#prompt.question("choose a transaction pin: ");
-
       this.#bank.createAccount(firstName, lastName, phoneNumber, email, pin);
+
+     const r = await this.continueBanking();
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async continueBanking() {
+    const anotherOps = await this.#prompt.question(
+      "Would you like to perform another operation?: "
+    );
+    if (anotherOps == normalizeString("y")) {
+      await this.runBank();
+    } else {
+      this.#prompt.close();
+      process.exit();
     }
   }
 }
