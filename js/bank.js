@@ -67,6 +67,9 @@ export class BankSystem {
       case BankOperation.CloseAccount:
         await this.closeAccount();
         break;
+      case BankOperation.TransferFunds:
+        await this.transfer();
+        break;
       default:
         console.log("Invalid input");
         break;
@@ -160,13 +163,55 @@ export class BankSystem {
     console.log("transaction successful");
   }
 
-  async transfer() {}
+  async transfer() {
+    const { account: senderAccount, accountNumber } =
+      await this.#authorizeUser();
+
+    const targetAccountNumber = await this.#prompt.question(
+      "Enter the target account number: "
+    );
+    const targetAccount = this.#findAccount(parseInt(targetAccountNumber));
+    if (!targetAccount) {
+      terminateProcess("invalid account number");
+    }
+    const amount = await this.#prompt.question(
+      "How much would you like to transfer?: "
+    );
+
+    const senderTransaction = new Transaction(
+      TransactionKind.Deposit,
+      `transfer ${amount} to ${targetAccount.fullName}`,
+      senderAccount.identifier,
+      amount
+    ).serialize();
+
+    const recipientTransaction = new Transaction(
+      TransactionKind.Deposit,
+      `recieved ${amount} from ${senderAccount.fullName}`,
+      targetAccount.identifier,
+      amount
+    ).serialize();
+
+    senderAccount.balance -= parseInt(amount);
+    targetAccount.balance += parseInt(amount);
+    const senderAccountIndex = this.#dataStore.accounts.findIndex(
+      (account) => account.accountNumber == accountNumber
+    );
+    const recipientAccountIndex = this.#dataStore.accounts.findIndex(
+      (account) => account.accountNumber == accountNumber
+    );
+
+    this.#dataStore.updateAccount(senderAccountIndex, account);
+    this.#dataStore.updateAccount(recipientAccountIndex, account);
+
+    this.#dataStore.saveTransaction(senderTransaction);
+    this.#dataStore.saveTransaction(recipientTransaction);
+
+    console.log("transaction successful");
+  }
 
   async closeAccount() {
-    const { account, accountNumber } = await this.#authorizeUser();
-    if (!account) {
-      terminateProcess("Invalid account details");
-    }
+    const { accountNumber } = await this.#authorizeUser();
     const confirmDelete = await this.#confirmSelection(
       "do you want to delete your account?"
     );

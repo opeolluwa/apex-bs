@@ -55,6 +55,7 @@ export class Account {
       pin: this.#pin,
       transactions: this.transactions,
       identifier: this.#identifier,
+      fullName: this.fullName,
     };
   }
 
@@ -72,5 +73,12 @@ export class Account {
    */
   get balance() {
     return this.#balance;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
   }
 }
