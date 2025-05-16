@@ -93,12 +93,13 @@ export class BankSystem {
     const emailExists = this.#checkEmailIsTaken(email);
     const phoneExists = this.#checkPhoneIsTaken(phoneNumber);
 
-    if (emailExists) {
-      terminateProcess("A user with that email already exists");
-    }
-    if (phoneExists) {
-      terminateProcess("A user with the selected phone already exists");
-    }
+    //FIXME: 
+    // if (emailExists) {
+    //   terminateProcess("A user with that email already exists");
+    // }
+    // if (phoneExists) {
+    //   terminateProcess("A user with the selected phone already exists");
+    // }
     const account = new Account(firstName, lastName, email, phoneNumber, pin);
     this.#dataStore.createAccount(account.serialize());
     console.log("account creates successfully\n");
@@ -180,14 +181,14 @@ export class BankSystem {
 
     const senderTransaction = new Transaction(
       TransactionKind.Deposit,
-      `transfer ${amount} to ${targetAccount.fullName}`,
+      ` ${senderAccount.fullName} transfer ${amount} to ${targetAccount.fullName}`,
       senderAccount.identifier,
       amount
     ).serialize();
 
     const recipientTransaction = new Transaction(
       TransactionKind.Deposit,
-      `recieved ${amount} from ${senderAccount.fullName}`,
+      `${targetAccount.fullName} recieved ${amount} from ${senderAccount.fullName}`,
       targetAccount.identifier,
       amount
     ).serialize();
@@ -201,8 +202,8 @@ export class BankSystem {
       (account) => account.accountNumber == accountNumber
     );
 
-    this.#dataStore.updateAccount(senderAccountIndex, account);
-    this.#dataStore.updateAccount(recipientAccountIndex, account);
+    this.#dataStore.updateAccount(senderAccountIndex, senderAccount);
+    this.#dataStore.updateAccount(recipientAccountIndex, targetAccount);
 
     this.#dataStore.saveTransaction(senderTransaction);
     this.#dataStore.saveTransaction(recipientTransaction);
@@ -244,9 +245,10 @@ export class BankSystem {
    * @returns boolean
    */
   #checkEmailIsTaken(email) {
-    return this.#accounts.filter((account) =>
-      Object.is(normalizeString(account.email), normalizeString(email))
-    );
+    const accountIndex = this.#dataStore.accounts.findIndex((account) => {
+      Object.is(normalizeString(account.email), normalizeString(email));
+    });
+    return accountIndex || false;
   }
 
   /**
@@ -255,12 +257,13 @@ export class BankSystem {
    * @returns boolean
    */
   #checkPhoneIsTaken(phoneNumber) {
-    return this.#accounts.filter((account) =>
+    const accountIndex = this.#dataStore.accounts.findIndex((account) => {
       Object.is(
         normalizeString(account.phoneNumber),
         normalizeString(phoneNumber)
-      )
-    );
+      );
+    });
+    return accountIndex || false;
   }
 
   /**
