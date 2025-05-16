@@ -6,8 +6,8 @@ import { BankOperation } from "./bankOperation.js";
 import { naira } from "./currency.js";
 import { DataStore } from "./db.js";
 import { normalizeString, terminateProcess } from "./lib.js";
-import { Transaction } from "./transactions.js";
 import { TransactionKind } from "./transactionKind.js";
+import { Transaction } from "./transactions.js";
 export class BankSystem {
   #bankName;
   #bankAddress;
@@ -63,6 +63,9 @@ export class BankSystem {
         break;
       case BankOperation.DepositFunds:
         await this.deposit();
+        break;
+      case BankOperation.CloseAccount:
+        await this.closeAccount();
         break;
       default:
         console.log("Invalid input");
@@ -159,7 +162,21 @@ export class BankSystem {
 
   async transfer() {}
 
-  async closeAccount() {}
+  async closeAccount() {
+    const { account, accountNumber } = await this.#authorizeUser();
+    if (!account) {
+      terminateProcess("Invalid account details");
+    }
+    const confirmDelete = await this.#confirmSelection(
+      "do you want to delete your account?"
+    );
+    if (confirmDelete) {
+      const accountIndex = this.#dataStore.accounts.findIndex(
+        (account) => account.accountNumber == accountNumber
+      );
+      this.#dataStore.deleteAccount(accountIndex);
+    }
+  }
   /**
    * @readonly
    * @returns {string} bank name
@@ -229,6 +246,16 @@ export class BankSystem {
     return bcrypt.compareSync(pin, account.pin);
   }
 
+  async #confirmSelection(message = "do you want to proceed") {
+    const resp = await this.#prompt.question(
+      normalizeString(message) + "y or n?: "
+    );
+    if (resp.trim().toLowerCase() == "y") {
+      return true;
+    } else {
+      return false;
+    }
+  }
   /***
    * @private function  authorizeUser
    * @returns {Object} - user
@@ -250,7 +277,6 @@ export class BankSystem {
     if (!validPin) {
       terminateProcess("incorrect pin");
     }
-
     return { accountNumber, account };
   }
 }

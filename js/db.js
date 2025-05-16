@@ -89,6 +89,15 @@ export class DataStore {
     this.#save(updatedStore);
   }
 
+  /**
+   * @param {number} accountNumber
+   */
+  deleteAccount(index) {
+    const updatedStore = this.#store;
+    updatedStore.accounts.splice(index, 1);
+    this.#save(updatedStore);
+  }
+
   #save(updatedStore) {
     writeFileSync(this.#dataFilePath, JSON.stringify(updatedStore));
   }
