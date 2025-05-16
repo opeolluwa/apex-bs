@@ -4,16 +4,16 @@
 export class BankOperation {
   static CreateAccount = "create-account";
   static Withdraw = "withdraw";
-  static CloseAccount = "close-account";
   static TransferFunds = "transfer-fun";
   static DepositFunds = "deposit-fund";
+  static CloseAccount = "close-account";
 
   static #operations = {
     1: this.CreateAccount,
     2: this.Withdraw,
-    3: this.CloseAccount,
+    3: this.DepositFunds,
     4: this.TransferFunds,
-    5: this.DepositFunds,
+    5: this.CloseAccount,
   };
   /**
    *

@@ -17,7 +17,7 @@ export class Transaction {
    *
    * @param {TransactionKind} kind
    * @param {string} description
-   * @param {string} accountIdentifier
+   * @param {string} accountIdentifier - the primary key of the account 
    * @param {number} amount
    */
   constructor(kind, description, accountIdentifier, amount) {

@@ -8,6 +8,7 @@ import {
 import { join } from "node:path";
 import { normalizeString } from "./lib.js";
 import { Transaction } from "./transactions.js";
+import { Account } from "./account.js";
 
 /**
  *  persist the bank data to a local JSON file
@@ -74,6 +75,17 @@ export class DataStore {
   createAccount(account) {
     const updatedStore = this.#store;
     updatedStore.accounts.push(account);
+    this.#save(updatedStore);
+  }
+
+  /**
+   *
+   * @param {number} index
+   * @param {Account} account
+   */
+  updateAccount(index, account) {
+    const updatedStore = this.#store;
+    updatedStore.accounts[index] = account;
     this.#save(updatedStore);
   }
 

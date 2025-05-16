@@ -19,7 +19,7 @@ export class BankSystem {
   /**
    *
    * @param {string} bankName  - name of the bank
-   * @param {string} bankAddress  the bankaddress
+   * @param {string} bankAddress  the bank address
    */
   constructor(bankName, bankAddress) {
     this.#bankName = bankName.trim();
@@ -40,14 +40,16 @@ export class BankSystem {
           What would you like to do? 
           1. Create account 
           2. Withdraw 
-          3. Close account 
+          3. Deposit
           4. Transfer 
-          5. Deposit
+          5. Close account 
+          
   
           >> `);
     return parseInt(answer);
   }
 
+  //todo: RUN RECURSIVELY
   async runBank() {
     const userInput = await this.#welcome();
     const operation = BankOperation.which(userInput);
@@ -58,6 +60,10 @@ export class BankSystem {
         break;
       case BankOperation.Withdraw:
         await this.withdraw();
+        break;
+      case BankOperation.DepositFunds:
+        await this.deposit();
+        break;
       default:
         console.log("Invalid input");
         break;
@@ -72,14 +78,21 @@ export class BankSystem {
    */
   async createAccount() {
     const firstName = await this.#prompt.question("What is your first name: ");
-    const lastName = await this.#prompt.question("What is yoour last name: ");
+    const lastName = await this.#prompt.question("What is your last name: ");
     const phoneNumber = await this.#prompt.question(
       "What is your phone number: "
     );
     const email = await this.#prompt.question("What is your email: ");
     const pin = await this.#prompt.question("choose a transaction pin: ");
-    this.#checkEmailIsTaken(email);
-    this.#checkPhoneIsTaken(phoneNumber);
+    const emailExists = this.#checkEmailIsTaken(email);
+    const phoneExists = this.#checkPhoneIsTaken(phoneNumber);
+
+    if (emailExists) {
+      terminateProcess("A user with that email already exists");
+    }
+    if (phoneExists) {
+      terminateProcess("A user with the selected phone already exists");
+    }
     const account = new Account(firstName, lastName, email, phoneNumber, pin);
     this.#dataStore.createAccount(account.serialize());
     console.log("account creates successfully\n");
@@ -92,29 +105,14 @@ export class BankSystem {
    * @returns null
    */
   async withdraw() {
-    const accountNumber = await this.#prompt.question(
-      "Enter your account number: "
-    );
-    const account = this.#findAccount(accountNumber);
-    if (!account) {
-      terminateProcess("invalid account number: ");
-    }
-    const pin = await this.#prompt.question(
-      "Enter your account transaction pin: "
-    );
-    const validPin = await this.#validatePin(parseInt(accountNumber), pin);
-    if (!validPin) {
-      terminateProcess("incorrect pin");
-    }
-
+    const { account, accountNumber } = await this.#authorizeUser();
     const amount = await this.#prompt.question("Enter the amount: ");
     if (account.balance < parseInt(amount)) {
       terminateProcess("insufficient fund");
     }
-
-    //todo: fix this
-    // const accountIdentifier = this.#dataStore.accounts.findIndex(account);
-    // console.log({ accountIdentifier });
+    const accountIndex = this.#dataStore.accounts.findIndex(
+      (account) => account.accountNumber == parseInt(accountNumber)
+    );
     account.balance -= amount;
     const transaction = new Transaction(
       TransactionKind.Withdraw,
@@ -123,10 +121,41 @@ export class BankSystem {
       amount
     ).serialize();
 
+    this.#dataStore.updateAccount(accountIndex, account);
     this.#dataStore.saveTransaction(transaction);
+    console.log("Transaction successful");
   }
 
-  async deposit() {}
+  async deposit() {
+    const accountNumber = await this.#prompt.question(
+      "Enter the target account number: "
+    );
+    const account = this.#findAccount(accountNumber);
+    if (!account) {
+      terminateProcess("invalid account number: ");
+    }
+    const depositorsName = await this.#prompt.question(
+      "Please provide your full name: "
+    );
+    const amount = await this.#prompt.question(
+      "How much would you like to deposit?: "
+    );
+
+    const transaction = new Transaction(
+      TransactionKind.Deposit,
+      `deposit of ${amount} by ${depositorsName}`,
+      account.identifier,
+      amount
+    ).serialize();
+
+    account.balance += parseInt(amount);
+    const accountIndex = this.#dataStore.accounts.findIndex(
+      (account) => account.accountNumber == accountNumber
+    );
+    this.#dataStore.updateAccount(accountIndex, account);
+    this.#dataStore.saveTransaction(transaction);
+    console.log("transaction successful");
+  }
 
   async transfer() {}
 
@@ -179,11 +208,18 @@ export class BankSystem {
    * @param {number} accountNumber
    */
   #findAccount(accountNumber) {
-    return this.#accounts.filter(
+    const index = this.#dataStore.accounts.findIndex(
       (account) => account.accountNumber == accountNumber
-    )[0];
+    );
+    return this.#dataStore.accounts.at(index);
   }
 
+  /**
+   *
+   * @param {number} accountNumber
+   * @param {number|string} pin
+   * @returns boolean
+   */
   async #validatePin(accountNumber, pin) {
     const account = await this.#findAccount(accountNumber);
     if (!account) {
@@ -193,7 +229,28 @@ export class BankSystem {
     return bcrypt.compareSync(pin, account.pin);
   }
 
-  #saveTransaction(transaction) {
-    this.#dataStore.transactions.push(transaction);
+  /***
+   * @private function  authorizeUser
+   * @returns {Object} - user
+   * @property {Account} account
+   * @property {number} accountNumber
+   */
+  async #authorizeUser() {
+    const accountNumber = await this.#prompt.question(
+      "Enter your account number: "
+    );
+    const account = this.#findAccount(accountNumber);
+    if (!account) {
+      terminateProcess("invalid account number: ");
+    }
+    const pin = await this.#prompt.question(
+      "Enter your account transaction pin: "
+    );
+    const validPin = await this.#validatePin(parseInt(accountNumber), pin);
+    if (!validPin) {
+      terminateProcess("incorrect pin");
+    }
+
+    return { accountNumber, account };
   }
 }
