@@ -74,6 +74,11 @@ export class BankSystem {
         console.log("Invalid input");
         break;
     }
+
+    const moreTransaction = await this.#confirmSelection(
+      "do you want to perfer another transaction?"
+    );
+    return moreTransaction;
   }
 
   /**
@@ -93,7 +98,7 @@ export class BankSystem {
     const emailExists = this.#checkEmailIsTaken(email);
     const phoneExists = this.#checkPhoneIsTaken(phoneNumber);
 
-    //FIXME: 
+    //FIXME:
     // if (emailExists) {
     //   terminateProcess("A user with that email already exists");
     // }
