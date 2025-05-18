@@ -1,7 +1,13 @@
+/*
+Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+*/
 package main
 
 import "github.com/opeolluwa/banking-systsm/golang/cmd"
 
 func main() {
-	cmd.RunBank()
+	var bankingSystem cmd.BankingSystem
+	bankingSystem.New()
+
+	bankingSystem.CreateAccount()
 }
