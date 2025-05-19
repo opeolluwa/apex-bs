@@ -1,10 +1,8 @@
 package cmd
 
 import (
-	"fmt"
 
 	"github.com/opeolluwa/banking-systsm/golang/pkg/bank"
-	"github.com/opeolluwa/banking-systsm/golang/pkg/lib"
 )
 
 type BankingSystem struct {
@@ -18,8 +16,8 @@ func (b *BankingSystem) New() *BankingSystem {
 }
 
 func (b *BankingSystem) CreateAccount() {
-	firstName := lib.ReadStringPrompt("What is your first name")
-	lastName := lib.ReadStringPrompt("What is your first name")
+	// firstName := lib.ReadStringPrompt("What is your first name")
+	// lastName := lib.ReadStringPrompt("What is your first name")
 
-	fmt.Println(firstName, lastName)
+	// fmt.Println(firstName, lastName)
 }

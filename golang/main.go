@@ -3,11 +3,29 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import "github.com/opeolluwa/banking-systsm/golang/cmd"
+import (
+	"fmt"
+
+	"github.com/manifoldco/promptui"
+	"github.com/opeolluwa/banking-systsm/golang/cmd"
+)
 
 func main() {
-	var bankingSystem cmd.BankingSystem
-	bankingSystem.New()
+	for {
+		cmd.RunBank()
+		prompt := promptui.Prompt{
+			Label:     "Do you want to perform another tranaction?",
+			IsConfirm: true,
+		}
 
-	bankingSystem.CreateAccount()
+		result, err := prompt.Run()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
+		if result != "y" {
+			break
+		}
+	
+	}
 }
