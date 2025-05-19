@@ -11,8 +11,11 @@ import (
 )
 
 func main() {
+	var bankingSystem cmd.BankingSystem
+	bank := bankingSystem.New()
+	
 	for {
-		cmd.RunBank()
+		cmd.RunBank(*bank)
 		prompt := promptui.Prompt{
 			Label:     "Do you want to perform another tranaction?",
 			IsConfirm: true,
@@ -26,6 +29,6 @@ func main() {
 		if result != "y" {
 			break
 		}
-	
+
 	}
 }

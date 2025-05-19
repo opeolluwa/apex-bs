@@ -7,7 +7,7 @@ import (
 	"github.com/opeolluwa/banking-systsm/golang/pkg/lib"
 )
 
-func RunBank() {
+func RunBank(bank BankingSystem) {
 
 	label := "What would you like to do"
 	options := []string{"Create account", "Withdraw", "Deposit", "Transfer", "Close account"}
@@ -32,6 +32,6 @@ func RunBank() {
 	case lib.Transfer.String():
 		fmt.Println("transfer")
 	case lib.CreateAccount.String():
-		fmt.Println("create account ")
+		bank.CreateAccount()
 	}
 }

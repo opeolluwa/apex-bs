@@ -15,9 +15,4 @@ func (b *BankingSystem) New() *BankingSystem {
 	}
 }
 
-func (b *BankingSystem) CreateAccount() {
-	// firstName := lib.ReadStringPrompt("What is your first name")
-	// lastName := lib.ReadStringPrompt("What is your first name")
 
-	// fmt.Println(firstName, lastName)
-}

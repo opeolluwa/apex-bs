@@ -1,32 +1,17 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
+	"fmt"
 
-	"github.com/spf13/cobra"
+	"github.com/opeolluwa/banking-systsm/golang/pkg/lib"
 )
 
-// createAccountCmd represents the createAccount command
-var createAccountCmd = &cobra.Command{
-	Use:   "create-account",
-	Short: "Create a new bank account",
-	Run: func(cmd *cobra.Command, args []string) {
-	
-	},
-}
+func (b *BankingSystem) CreateAccount() {
 
-func init() {
-	rootCmd.AddCommand(createAccountCmd)
+	firstName, _ := lib.StringPrompt("What is your first name")
+	lastName, _ := lib.StringPrompt("What is your last name")
+	pin, _ := lib.StringPrompt("Provide a transaction pin")
 
-	// Here you will define your flags and configuration settings.
+	fmt.Println(firstName, lastName, pin)
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// createAccountCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// createAccountCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
