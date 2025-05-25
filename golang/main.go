@@ -5,6 +5,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/opeolluwa/banking-systsm/golang/models"
 	"os"
 
 	"github.com/manifoldco/promptui"
@@ -20,14 +21,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	db.AutoMigrate()
+	dbMigrateErr := db.AutoMigrate(&models.Transaction{}, &models.Account{})
+	if dbMigrateErr != nil {
+		fmt.Printf("error migrating entities due to %v\n", err)
+	}
 	var bankingSystem cmd.BankingSystem
 	bank := bankingSystem.New(*db)
 
 	for {
 		cmd.RunBank(*bank)
 		prompt := promptui.Prompt{
-			Label:     "Do you want to perform another tranaction?",
+			Label:     "Do you want to perform another transaction?",
 			IsConfirm: true,
 		}
 

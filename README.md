@@ -8,13 +8,13 @@ A curated list of non-GUI banking system features you can implement in **C**, **
 
 Each language will build a **modular banking backend** with the following core features:
 
-- Account creation  
-- Deposit/withdrawal  
-- Transfer between accounts  
-- Transaction history  
-- Basic authentication  
-- Persistence (file or in-memory DB)  
-- **Optional**: concurrency, unit testing, CLI interaction  
+- Account creation
+- Deposit/withdrawal
+- Transfer between accounts
+- Transaction history
+- Basic authentication
+- Persistence (file or in-memory DB)
+- **Optional**: concurrency, unit testing, CLI interaction
 
 ---
 
@@ -23,6 +23,7 @@ Each language will build a **modular banking backend** with the following core f
 **🎯 Goal**: Reinforce understanding of pointers, structs, file I/O, and manual memory management.
 
 ### Suggested Features:
+
 - Define `struct` for `Account` and `Transaction`
 - Store data in plain text or binary files (manual serialization)
 - Use file-based locking for simple concurrent access
@@ -40,6 +41,7 @@ Pointers, file I/O (`fopen`, `fread`, `fwrite`), error handling, memory leaks, `
 **🎯 Goal**: Practice ownership, borrowing, enums, and error handling with `Result`.
 
 ### Suggested Features:
+
 - Define structs with ownership (`Account`, `Bank`, `Transaction`)
 - Use `HashMap` for in-memory account storage
 - Persist using `serde` and `serde_json` or `bincode`
@@ -54,9 +56,10 @@ Ownership, lifetimes, `Result`, modules, error handling, concurrency, testing.
 
 ## 🔹 Go — Simplicity and Concurrency
 
-**🎯 Goal**: Emphasize goroutines, channels, structs, and interfaces.
+**🎯 Goal**: Emphasize goroutines, Structuring Golang projects , channels, structs, and interfaces
 
 ### Suggested Features:
+
 - Define account structs with methods
 - Use goroutines and channels to simulate concurrent transfers
 - JSON-based persistence via `encoding/json`
@@ -74,6 +77,7 @@ Goroutines, channels, struct methods, `interface{}`, JSON, `sync.Mutex`.
 **🎯 Goal**: Focus on async I/O, data manipulation, and modular code.
 
 ### Suggested Features:
+
 - Use in-memory `Map` or persist to JSON files
 - Handle commands from CLI using `readline`
 - Simulate async transactions with `setTimeout`/`Promise`
@@ -96,4 +100,3 @@ Goroutines, channels, struct methods, `interface{}`, JSON, `sync.Mutex`.
 - Audit trail feature for each account
 
 ---
-
