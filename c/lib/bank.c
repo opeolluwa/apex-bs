@@ -6,6 +6,9 @@ enum BankOperation
 
 struct Bank
 {
+    //storage
+    //accounts -> pointer to storage.accounts
+    //transactions -> pointer to storage.accounts
 };
 
 enum BankOperation prompt_operation_selection()
