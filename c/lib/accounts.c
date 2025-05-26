@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include "../include/uuid.h"
+#include "../include/uuidv4.h"
 
 struct Account
 {
     char identifier[36];
     double account_balance;
-    char first_name[20];
-    char last_name[20];
+    char *first_name;
+    char *last_name;
 };
 
 

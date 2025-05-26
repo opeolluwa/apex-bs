@@ -1,18 +1,17 @@
 #include <stdbool.h>
-#include "lib/bank.c"
-#include "lib/utils.c"
-#include "lib/transaction.c"
+#include "lib/utils.h"
+// #include "lib/bank.h"
+
 bool perform_more_transaction = false;
 
 int main(int argc, char* argv[])
 {
-    do
+    while (perform_more_transaction != false)
     {
-        enum BankOperation selected_operation = prompt_operation_selection();
-        prompt_operation_selection(selected_operation);
+        const enum BankOperation selected_operation = prompt_operation_selection();
+        process_selection(selected_operation);
 
-        bool selection = confirm_further_operation();
+       const bool selection = confirm_further_operation();
         perform_more_transaction = selection;
     }
-    while (perform_more_transaction != false);
 }

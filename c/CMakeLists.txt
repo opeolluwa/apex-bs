@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.31)
 
 project(banking_system)
 
-add_executable(banking_system main.c)
+include_directories(include lib)
 
-include_directories(BEFORE, include lib)
+add_executable(app main.c include/uuidv4.c lib/utils.c lib/transaction.c lib/bank.c lib/accounts.c)
+
