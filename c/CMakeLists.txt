@@ -4,3 +4,4 @@ project(banking_system)
 
 add_executable(banking_system main.c)
 
+include_directories(BEFORE, include lib)
