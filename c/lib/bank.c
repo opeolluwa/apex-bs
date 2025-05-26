@@ -12,7 +12,7 @@ enum BankOperation prompt_operation_selection()
 {
     int operation;
     printf(
-        "Please select an operation\n1 ->Create account\n2 -> Transfer funds\n3 -> Withdraw\n4 -> Check balance ");
+        "Please select an operation\n1 -> Create account\n2 -> Transfer funds\n3 -> Withdraw\n4 -> Check balance \n>>");
     scanf("%d", &operation);
     switch (operation)
     {

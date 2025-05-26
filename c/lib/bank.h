@@ -1,7 +1,10 @@
 #ifndef BANK_H
 #define BANK_H
 
-enum BankOperation;
+enum BankOperation
+{
+    InvalidOperation = 0, CreateAccount = 1, TransferFunds, Withdraw, CheckBalance
+};
 
 struct Bank;
 
