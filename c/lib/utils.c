@@ -1,8 +1,6 @@
-#include "bank.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "account.h"
 bool confirm_further_operation()
 {
     char selection;
@@ -12,14 +10,3 @@ bool confirm_further_operation()
 }
 
 
-void process_selection(const enum BankOperation selected_operation)
-{
-    switch (selected_operation)
-    {
-    case CreateAccount:
-        create_account();
-        break;
-    default:
-        printf("the selected operation is %d", selected_operation);
-    }
-}

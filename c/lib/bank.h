@@ -27,9 +27,11 @@ void get_account_transactions();
 
 
 /**
- * Inter nal Calls
+ * Internal Calls
  */
 void find_or_create_data_storage();
 void save_changes();
 void save_transactions();
+void process_selection(enum BankOperation selected_operation);
+
 #endif

@@ -10,7 +10,7 @@ struct Account
 };
 
 
-struct Account create_account()
+struct Account __create_account()
 {
     struct Account account;
 

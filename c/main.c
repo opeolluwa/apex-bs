@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include "lib/utils.h"
-// #include "lib/bank.h"
+#include "lib/bank.h"
 
 bool perform_more_transaction = false;
 

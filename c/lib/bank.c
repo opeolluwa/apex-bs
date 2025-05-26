@@ -1,8 +1,6 @@
 #include <stdio.h>
-enum BankOperation
-{
-    InvalidOperation = 0, CreateAccount = 1, TransferFunds, Withdraw, CheckBalance
-};
+#include "bank.h"
+#include "account.h"
 
 struct Bank
 {
@@ -30,4 +28,23 @@ enum BankOperation prompt_operation_selection()
     default:
         return InvalidOperation;
     }
+}
+
+
+void process_selection(const enum BankOperation selected_operation)
+{
+    switch (selected_operation)
+    {
+    case CreateAccount:
+        create_account();
+        break;
+    default:
+        printf("the selected operation is %d", selected_operation);
+    }
+}
+
+
+void create_account()
+{
+    __create_account();
 }
