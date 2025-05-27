@@ -3,5 +3,6 @@
 default:
     @just --list 
 
-go target:
-    echo {{target}}
+watch:
+    find . -name '*.c' -o -name '*.h' | entr -c cmake --build build
+

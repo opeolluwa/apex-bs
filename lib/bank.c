@@ -22,11 +22,11 @@ enum BankOperation prompt_operation_selection()
     case 2:
         return TransferFunds;
     case 3:
-        return Withdraw;
+        return WithdrawFunds;
     case 4:
         return CheckBalance;
-    default:
-        return InvalidOperation;
+    // default:
+    //     return InvalidOperation;
     }
 }
 

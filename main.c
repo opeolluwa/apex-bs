@@ -1,37 +1,29 @@
-// #include <stdbool.h>
-// #include "lib/utils.h"
-// #include "lib/bank.h"
-//
-// bool perform_more_transaction = false;
-//
-// int main(int argc, char* argv[])
-// {
-//     do
-//     {
-//         const enum BankOperation selected_operation = prompt_operation_selection();
-//         process_selection(selected_operation);
-//
-//         const bool selection = confirm_further_operation();
-//         perform_more_transaction = selection;
-//     }
-//     while (perform_more_transaction != false);
-// }
-
-
-
-
-#include "include/raylib.h"
+#include "include/libraygui/raylib.h"
 
 #define RAYGUI_IMPLEMENTATION
-#include "include/raygui.h"
-#include "include/raygui_cyber_style.h"
+#include "include/libraygui/raygui.h"
+#include "include/libraygui/style.h"
+#include "lib/bank.h"
+// #include  "include/libraygui/icon.h"
+
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
+#define ELEMENT_SPACER 10
+
+void render_create_bank_view(void);
+void render_transfer_funds_view(void);
+void render_withdraw_view(void);
+void render_check_balance_view(void);
+void render_default_view(void);
 
 int main()
 {
-    InitWindow(500, 500, "Apex Bank PLC");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Apex Bank PLC");
     SetTargetFPS(60);
 
     bool showMessageBox = false;
+    int selected_action = -1;
+    int index_action = -1;
 
     GuiLoadStyleCyber();
 
@@ -42,19 +34,66 @@ int main()
         BeginDrawing();
         ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
 
-        if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
 
-        if (showMessageBox)
+        if (selected_action == -1)
         {
-            int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
-                "#191#Message Box", "Hi! This is a message!", "Nice;Cool");
-
-            if (result >= 0) showMessageBox = false;
+            GuiLabel((Rectangle){10, 10, WINDOW_WIDTH, 24}, "What would you like to do?");
+            GuiListView((Rectangle){10, 60, (int)(WINDOW_WIDTH - ELEMENT_SPACER * 2), 200},
+                        "> create account;> withdraw funds;> transfer funds;> make a complaint;> check balance",
+                        &index_action, &selected_action);
         }
 
+
+        if (selected_action == CreateAccount)
+        {
+            // GuiButton((Rectangle){10, 10, 50, 24}, "go back");
+            GuiLabel((Rectangle){20, 10, WINDOW_WIDTH, 24}, "Welcome to account creation");
+        }
+
+        if (selected_action == WithdrawFunds)
+        {
+            // GuiButton((Rectangle){10, 10, 50, 24}, "go back");
+            GuiLabel((Rectangle){10, 10, WINDOW_WIDTH, 24}, "Welcome to bank withdraw");
+        }
+
+        if (selected_action == TransferFunds)
+        {
+            if (GuiButton((Rectangle){10, 10, 90, 24}, GuiIconText(ICON_ARROW_LEFT, "GO BACK    ")))
+            {
+                selected_action = -1;
+            }
+            GuiLabel((Rectangle){10, 35, WINDOW_WIDTH, 24}, "Welcome to bank transfer");
+        }
+
+        if (selected_action == CheckBalance)
+        {
+            // GuiButton((Rectangle){10, 10, 50, 24}, "go back");
+            GuiLabel((Rectangle){10, 10, WINDOW_WIDTH, 24}, "Welcome to bank check balance");
+        }
         EndDrawing();
     }
 
     CloseWindow();
     return 0;
+}
+
+
+void render_create_bank_view(void)
+{
+}
+
+void render_transfer_funds_view(void)
+{
+}
+
+void render_withdraw_view(void)
+{
+}
+
+void render_check_balance_view(void)
+{
+}
+
+void render_default_view(void)
+{
 }

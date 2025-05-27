@@ -3,7 +3,7 @@
 
 enum BankOperation
 {
-    InvalidOperation = 0, CreateAccount = 1, TransferFunds, Withdraw, CheckBalance
+    CreateAccount = 0, WithdrawFunds = 1, TransferFunds = 2, MakeComplaint = 3, CheckBalance = 4
 };
 
 struct Bank;
@@ -24,7 +24,6 @@ void withdraw_funds();
  */
 void create_transaction();
 void get_account_transactions();
-
 
 /**
  * Internal Calls
