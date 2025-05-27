@@ -1,0 +1,10 @@
+
+
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
+#define ELEMENT_SPACER 10
+
+#endif //CONSTANTS_H
