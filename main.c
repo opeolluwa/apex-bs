@@ -20,17 +20,20 @@
 
 
 
-#include "raylib.h"
+#include "include/raylib.h"
 
 #define RAYGUI_IMPLEMENTATION
 #include "include/raygui.h"
+#include "include/raygui_cyber_style.h"
 
 int main()
 {
-    InitWindow(400, 200, "raygui - controls test suite");
+    InitWindow(500, 500, "Apex Bank PLC");
     SetTargetFPS(60);
 
     bool showMessageBox = false;
+
+    GuiLoadStyleCyber();
 
     while (!WindowShouldClose())
     {
