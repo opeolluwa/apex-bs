@@ -1,10 +1,11 @@
-
-
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500
 #define ELEMENT_SPACER 10
+#define ELEMENT_HEIGHT 24
+#define PADDING 10
+#define  VERTICAL_POSITION 35
 
 #endif //CONSTANTS_H

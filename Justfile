@@ -1,4 +1,4 @@
-
+alias w:= watch
 
 default:
     @just --list 

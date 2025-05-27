@@ -4,9 +4,8 @@
 
 struct Bank
 {
-    //storage
-    //accounts -> pointer to storage.accounts
-    //transactions -> pointer to storage.accounts
+    enum Language language;
+
 };
 
 enum BankOperation prompt_operation_selection()

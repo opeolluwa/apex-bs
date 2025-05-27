@@ -16,7 +16,18 @@ bool confirm_further_operation()
 
 void render_create_bank_view(void)
 {
-    GuiLabel((Rectangle){20, 35, WINDOW_WIDTH, 24}, "Welcome to account creation");
+    bool secret_view_active = true;
+    GuiLabel((Rectangle){10, VERTICAL_POSITION, WINDOW_WIDTH, 24}, "Welcome to account creation");
+
+    // GuiTextInputBox((Rectangle){10, VERTICAL_POSITION * 2, (WINDOW_WIDTH * 0.65), (float)ELEMENT_HEIGHT}, "",
+    //                 "input your first name",
+    //                 "", "", 100, &secret_view_active);
+
+    GuiTextBox((Rectangle){10, VERTICAL_POSITION * 2, (WINDOW_WIDTH * 0.95), (float)ELEMENT_HEIGHT},
+               "Enter your first name", 99, false);
+
+    GuiTextBox((Rectangle){10, VERTICAL_POSITION * 3, (WINDOW_WIDTH * 0.95), (float)ELEMENT_HEIGHT},
+               "Enter your last name", 99, false);
 }
 
 void render_transfer_funds_view(void)
@@ -38,4 +49,3 @@ void render_default_view(void)
 {
     GuiLabel((Rectangle){10, 35, WINDOW_WIDTH, 24}, "Unknown action selected.");
 }
-

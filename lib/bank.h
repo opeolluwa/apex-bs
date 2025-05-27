@@ -6,6 +6,12 @@ enum BankOperation
     CreateAccount = 0, WithdrawFunds = 1, TransferFunds = 2, MakeComplaint = 3, CheckBalance = 4
 };
 
+enum Language
+{
+    English,
+    French
+};
+
 struct Bank;
 
 enum BankOperation prompt_operation_selection();
