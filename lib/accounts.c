@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "../include/uuidv4.h"
@@ -23,6 +24,7 @@ Account __create_account()
     printf("Choose a 4 digit transaction pin ");
     scanf("%4s", pin);
     printf("Enter your email ");
+
     scanf("%99s", account.email);
 
     if (uuid4_to_s(uuid, account.identifier, UUID4_STR_BUFFER_SIZE) != true) fprintf(stderr, "error parsing uuid");
@@ -38,6 +40,7 @@ Account __create_account()
     if (rc != 0) fprintf(stderr, "failed to hash password");
 
     account.account_balance = 0;
+    snprintf(account.account_number, sizeof(account.account_number), "%010d", rand() % 1000000000);
     strcpy(account.transaction_pin, hash);
     return account;
 }
