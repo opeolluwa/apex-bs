@@ -4,8 +4,9 @@
 
 struct Bank
 {
-    enum Language language;
-
+    //storage
+    //accounts -> pointer to storage.accounts
+    //transactions -> pointer to storage.accounts
 };
 
 enum BankOperation prompt_operation_selection()
@@ -24,8 +25,8 @@ enum BankOperation prompt_operation_selection()
         return WithdrawFunds;
     case 4:
         return CheckBalance;
-    // default:
-    //     return InvalidOperation;
+    default:
+        return -1;
     }
 }
 
