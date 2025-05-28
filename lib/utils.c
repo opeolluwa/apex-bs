@@ -65,9 +65,8 @@ void render_create_bank_view(void)
     }
 
 
-    if (GuiButton((Rectangle){10, 280, WINDOW_WIDTH * 0.95, 24}, GuiIconText(ICON_ARROW_LEFT, "Create account")))
+    if (GuiButton((Rectangle){10, 280, WINDOW_WIDTH * 0.95, 24}, GuiIconText(ICON_ARROW_RIGHT, "Create account")))
     {
-        exit(1);
         printf("%s %s %s %d", first_name, last_name, transaction_pin, account_type);
     }
 }
