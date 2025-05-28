@@ -19,15 +19,32 @@ int main(void)
         fprintf(stdout, "Database connection successfully established\n");
     };
 
-
     const char* query =
-        "CREATE TABLE IF NOT EXISTS accounts(identifier CHAR(36), account_number CHAR(10), first_name TEXT, last_name TEXT, transaction_pin CHAR(4), account_balance INTEGER) "
-        "CREATE TABLE IF NOT EXISTS transactions(identifier CHAR(36), sender_account_identifier CHAR(36),recipient_account_identifier CHAR(36), description CHAR(255) transaction_date TEXT)";
-    char* err_message;
-    rc = sqlite3_exec(database, query, NULL, 0, &err_message
-    );
+        "CREATE TABLE IF NOT EXISTS accounts ("
+        "identifier CHAR(36) PRIMARY KEY,"
+        "account_number CHAR(10),"
+        "first_name TEXT, "
+        "last_name TEXT,"
+        "transaction_pin CHAR(4),"
+        "account_balance REAL);"
 
-    if (rc != SQLITE_OK) fprintf(stderr, "Error opening database file due to %s", sqlite3_errmsg(database));
+        "CREATE TABLE IF NOT EXISTS transactions("
+        "identifier CHAR(36) PRIMARY KEY,"
+        "sender_account_identifier CHAR(36),"
+        "recipient_account_identifier CHAR(36),"
+        "description TEXT,"
+        "transaction_date TEXT);";
+
+    char* err_message;
+    rc = sqlite3_exec(database, query, 0, 0, &err_message);
+
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Error opening database file due to %s", sqlite3_errmsg(database));
+        sqlite3_free(err_message);
+        sqlite3_close(database);
+        return 1;
+    }
 
     do
     {
