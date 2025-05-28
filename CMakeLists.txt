@@ -8,10 +8,9 @@ include_directories(include lib)
 
 set(CMAKE_C_STANDARD 11)
 
-##find_package(raylib 5.5 REQUIRED)
-#
-#
-#target_link_libraries(${PROJECT_NAME} raylib)
+find_package(SQLite3 3.39 REQUIRED)
+
+target_link_libraries(${PROJECT_NAME} SQLite3)
 #
 ## Checks if OSX and links appropriate frameworks (only required on MacOS)
 #if (APPLE)

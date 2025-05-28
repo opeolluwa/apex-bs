@@ -1,18 +1,11 @@
 #include <stdio.h>
 #include "../include/uuidv4.h"
+#include "account.h"
 
-struct Account
+
+Account __create_account()
 {
-    char identifier[36];
-    double account_balance;
-    char first_name[100];
-    char last_name[100];
-};
-
-
-struct Account __create_account()
-{
-    struct Account account;
+    Account account;
 
     UUID4_STATE_T state;
     UUID4_T uuid;
@@ -24,8 +17,11 @@ struct Account __create_account()
     scanf("%99s", account.first_name);
     printf("What is your last name? ");
     scanf("%99s", account.last_name);
+    printf("Choose a 4 digit transaction pin ");
+    scanf("%4s", account.transaction_pin);
     account.account_balance = 0;
     uuid4_to_s(uuid, account.identifier, 36);
 
+    printf("%s  %s %s %s", account.first_name, account.last_name, account.transaction_pin, account.identifier);
     return account;
 }
