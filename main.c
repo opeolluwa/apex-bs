@@ -24,6 +24,7 @@ int main(void)
         "identifier CHAR(36) PRIMARY KEY,"
         "account_number CHAR(10),"
         "first_name TEXT, "
+        "email, "
         "last_name TEXT,"
         "transaction_pin CHAR(4),"
         "account_balance REAL);"
