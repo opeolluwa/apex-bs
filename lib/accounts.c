@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../include/uuidv4.h"
 #include "account.h"
-
+#include "../include/libbcrypt/bcrypt.h"
 
 Account __create_account()
 {
@@ -20,8 +20,6 @@ Account __create_account()
     printf("Choose a 4 digit transaction pin ");
     scanf("%4s", account.transaction_pin);
     account.account_balance = 0;
-    uuid4_to_s(uuid, account.identifier, 36);
-
-    printf("%s  %s %s %s", account.first_name, account.last_name, account.transaction_pin, account.identifier);
+    if (uuid4_to_s(uuid, account.identifier, UUID4_STR_BUFFER_SIZE) != true) fprintf(stderr, "error parsing uuid");
     return account;
 }
